@@ -32,13 +32,12 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, main_frame : ttk.Frame)
     selectedv_label = ttk.Label(master = main_frame, textvariable = selv_str, font = FONT_SIZE)
     selectedv_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
 
-    #print(selectedv_label.cget('textvariable'))
-
     sele_str = tk.StringVar(value = 'Selected Edges: ' + ' , '.join(graph.selected_vertices))
 
     selectede_label = ttk.Label(master = main_frame, textvariable = sele_str, font = FONT_SIZE)
     selectede_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
 
-    #print(selectede_label.cget('textvariable'))
+    btn = ttk.Button(master = main_frame, text="Start Prim's Algorithm", command = graph.primsAlgorithm)
+    btn.pack()
 
     return [selv_str, sele_str]
