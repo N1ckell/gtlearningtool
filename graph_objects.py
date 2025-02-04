@@ -110,3 +110,59 @@ class Graph:
 
         self.v_map : dict[int , Vertex] = {}
         self.e_map : dict[int , Edge] = {}
+
+    def getAdjacentVertices(self, vertex : Vertex):
+        #returns the adjacent vertices and the
+        #edge connecting it to given vertex
+        adjacent = []
+
+        for edge in self.edges:
+            if edge.v1 == vertex and (edge.v2, edge) not in adjacent:
+                #x = (edge.v2.label, str(edge.v1.label) + str(edge.v2.label))
+                x = (edge.v2, edge)
+                adjacent.append(x)
+            elif edge.v2 == vertex and (edge.v1, edge) not in adjacent:
+                #y = (edge.v1.label, str(edge.v1.label) + str(edge.v2.label))
+                y = (edge.v1, edge)
+                adjacent.append(y)
+
+        return adjacent
+        
+
+    def primsAlgorithm(self):
+        #init mst including starting vertex
+        #starting_vertex = self.vertices(r.randint(0,len(self.vertices)))
+        starting_vertex = self.vertices[0]
+        starting_vertex.fill = 'green2'
+        mst = [starting_vertex]
+        chosen_edges = []
+
+        #loops until all vertices visited
+        while len(mst) < len(self.vertices):
+
+            #check the lowest weighted edge which connects a vertex
+            #from the mst to a vertex outside the mst
+            adjacent_vertices = []
+            #current lowest edge weight
+            min_weight = m.inf
+
+            for vertex in mst:
+                adjacent_vertices.append(self.getAdjacentVertices(vertex))
+            
+            for vertex_edge_list in adjacent_vertices:
+                for pair in vertex_edge_list:
+                    if pair[0] not in mst and pair[1].label < min_weight:
+
+                        current_vertex = pair[0]
+                        current_edge = pair[1]
+                        min_weight = current_edge.label
+
+            if current_vertex:
+                mst.append(current_vertex)
+                current_vertex.fill = 'green2'
+                chosen_edges.append(current_edge)
+                current_edge.colour = 'green2'
+
+
+                
+
