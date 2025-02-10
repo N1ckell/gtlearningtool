@@ -39,7 +39,7 @@ graph.e_map = ggen.drawEdges(canv, graph.edges)
 graph.v_map = ggen.drawVertices(canv, graph.vertices)
 
 #create gui labels
-ggui_labels = ggui.createGraphGui(app, graph, gui_frame)
+ggui_labels = ggui.createGraphGui(app, graph, gui_frame, canv)
 
 #bind canvas objects to corresponding click functions
 ggen.bindShapetoObj(canv, graph, ggui_labels)

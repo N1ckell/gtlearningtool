@@ -26,7 +26,7 @@ def createGuiFrame(app: ttk.Window):
                    padx = GUI_PADDING, pady = GUI_PADDING)
     return gui_frame
 
-def createGraphGui(app : ttk.Window, graph : gobj.Graph, main_frame : ttk.Frame):
+def createGraphGui(app : ttk.Window, graph : gobj.Graph, main_frame : ttk.Frame, canv : tk.Canvas):
     selv_str = tk.StringVar(value = 'Selected Vertices: ' + ' , '.join(graph.selected_vertices))
 
     selectedv_label = ttk.Label(master = main_frame, textvariable = selv_str, font = FONT_SIZE)
@@ -37,7 +37,7 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, main_frame : ttk.Frame)
     selectede_label = ttk.Label(master = main_frame, textvariable = sele_str, font = FONT_SIZE)
     selectede_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
 
-    btn = ttk.Button(master = main_frame, text="Start Prim's Algorithm", command = graph.primsAlgorithm)
+    btn = ttk.Button(master = main_frame, text="Start Prim's Algorithm", command = lambda : graph.primsAlgorithm(canv))
     btn.pack()
 
     return [selv_str, sele_str]

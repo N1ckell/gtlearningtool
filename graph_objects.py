@@ -1,6 +1,6 @@
-import random as r
+import time as t
 import math as m
-import heapq as hq
+import tkinter as tk
 
 CIRCLE_RADIUS = 25
 LABEL_SIZE = 15
@@ -128,12 +128,21 @@ class Graph:
 
         return adjacent
         
+    def getIdFromObj(self, target_obj, target_dict : dict):
+        #returns the canvas id of a shape
+        #from v_map or e_map when given it's
+        #corresponding edge or vertex
 
-    def primsAlgorithm(self):
+        id = list(filter(lambda obj: target_dict[obj] == target_obj, target_dict))
+
+        return id
+
+    def primsAlgorithm(self, canv : tk.Canvas):
         #init mst including starting vertex
         #starting_vertex = self.vertices(r.randint(0,len(self.vertices)))
         starting_vertex = self.vertices[0]
-        starting_vertex.fill = 'green2'
+
+        #canv.itemconfig(self.getIdFromObj(starting_vertex, self.v_map), fill = 'green2')
         mst = [starting_vertex]
         chosen_edges = []
 
@@ -159,9 +168,9 @@ class Graph:
 
             if current_vertex:
                 mst.append(current_vertex)
-                current_vertex.fill = 'green2'
+                #canv.itemconfig(self.getIdFromObj(current_vertex, self.v_map), fill = 'green2')
                 chosen_edges.append(current_edge)
-                current_edge.colour = 'green2'
+                canv.itemconfig(self.getIdFromObj(current_edge, self.e_map), fill = 'green2')
 
 
                 
