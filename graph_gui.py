@@ -6,6 +6,16 @@ GUI_PADDING = 50
 LABEL_PADDING = 5
 FONT_SIZE = 'Calibri 30'
 
+def createCanvas(app : ttk.Window,
+                 canv_w : int, canv_h : int,
+                 canv_colour : str, padding : int):
+    #create canvas
+    canv = tk.Canvas(app, width = canv_w, height = canv_h)
+    canv.config(background= canv_colour)
+    canv.pack(padx = padding, pady= padding, side = 'left')
+
+    return canv
+
 def verticesToLabelText(vertex_list : list[gobj.Vertex]):
     return [vertex.label for vertex in vertex_list]
 
@@ -21,7 +31,7 @@ def edgesToLabelText(edge_list : list[gobj.Edge]):
 
 def createGuiFrame(app: ttk.Window):
 
-    gui_frame = ttk.Frame(master = app)
+    gui_frame = tk.Frame(master = app)
     gui_frame.pack(side = 'right', expand= True, fill = 'both',
                    padx = GUI_PADDING, pady = GUI_PADDING)
     return gui_frame
