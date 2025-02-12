@@ -5,31 +5,25 @@ import graph_gui as ggui
 import custom_graph as cg
 
 
-WINDOW_BG = 'thistle3'
-CANV_COLOUR = ggen.CANVAS_COLOUR
-CANV_PADDING = 50
-
+WINDOW_BG = 'lightgrey'
 
 #create app window
 app = ttk.Window(title= 'GT Learning Tool')
 app.config(background = WINDOW_BG)
 #starts the window maximised
 app.state('zoomed')
+
 win_width = app.winfo_screenwidth()
 win_height = app.winfo_screenheight()
 
-CANV_W = int(win_width // 2.5)
+CANV_W = int(win_width // 2.25)
 CANV_H = int(win_height - (win_height // 4) )
 
+#create initial gui
+gui_elements = ggui.initGraphGui(app,CANV_W, CANV_H)
 
-main_frame = tk.Frame(master = app)
-main_frame.config(bg = WINDOW_BG)
-main_frame.pack(padx = 50, pady=50, fill = 'both')
-#create canvas
-canv = ggui.createCanvas(main_frame, CANV_W, CANV_H, CANV_COLOUR, CANV_PADDING)
-
-#create side gui
-gui_frame = ggui.createGuiFrame(main_frame)
+canv = gui_elements[0]
+right_frame = gui_elements[1]
 
 #random generation (for testing)
 v_list = ggen.generateRandomVertices(CANV_W,CANV_H, 24)
@@ -44,7 +38,7 @@ graph.e_map = ggen.drawEdges(canv, graph.edges)
 graph.v_map = ggen.drawVertices(canv, graph.vertices)
 
 #create gui labels
-ggui_labels = ggui.createGraphGui(app, graph, gui_frame, canv)
+ggui_labels = ggui.createGraphGui(app, graph, right_frame, canv)
 
 #bind canvas objects to corresponding click functions
 ggen.bindShapetoObj(canv, graph, ggui_labels)

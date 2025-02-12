@@ -2,17 +2,21 @@ import tkinter as tk
 import ttkbootstrap as ttk
 import graph_objects as gobj
 
-GUI_PADDING = 50
-LABEL_PADDING = 5
-FONT_SIZE = 'Calibri 30'
+GUI_PADDING = 30
+LABEL_PADDING = 20
+INNER_PADDING = 5
+FONT_SIZE = 'Calibri 20'
+
+CANV_COLOUR = 'white'
+CANV_PADDING = 50
 
 def createCanvas(app : ttk.Window,
                  canv_w : int, canv_h : int,
-                 canv_colour : str, padding : int):
+                 canv_colour : str):
     #create canvas
     canv = tk.Canvas(app, width = canv_w, height = canv_h)
     canv.config(background= canv_colour)
-    canv.pack(padx = padding, pady= padding, side = 'left')
+    canv.pack(padx = INNER_PADDING, pady = INNER_PADDING, side = 'left', fill = 'both')
 
     return canv
 
@@ -33,21 +37,93 @@ def createGuiFrame(app: ttk.Window):
 
     gui_frame = tk.Frame(master = app)
     gui_frame.pack(side = 'right', expand= True, fill = 'both',
-                   padx = GUI_PADDING, pady = GUI_PADDING)
+                   padx = INNER_PADDING, pady = INNER_PADDING)
     return gui_frame
 
-def createGraphGui(app : ttk.Window, graph : gobj.Graph, main_frame : ttk.Frame, canv : tk.Canvas):
-    selv_str = tk.StringVar(value = 'Selected Vertices: ' + ' , '.join(graph.selected_vertices))
+def initGraphGui(app : ttk.Window, CANV_W: int, CANV_H : int):
 
-    selectedv_label = ttk.Label(master = main_frame, textvariable = selv_str, font = FONT_SIZE)
-    selectedv_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
+    main_frame = tk.Frame(master = app)
+    main_frame.config(bg = app.cget('background'))
+    main_frame.pack(side = 'bottom', fill = 'both', expand = True)
+    #create canvas
+    canv = createCanvas(main_frame, CANV_W, CANV_H, CANV_COLOUR)
 
-    sele_str = tk.StringVar(value = 'Selected Edges: ' + ' , '.join(graph.selected_vertices))
+    #create side gui
+    gui_frame = createGuiFrame(main_frame)
 
-    selectede_label = ttk.Label(master = main_frame, textvariable = sele_str, font = FONT_SIZE)
-    selectede_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
+    #return so canvas can be worked with
+    return [canv, gui_frame]
 
-    btn = ttk.Button(master = main_frame, text="Start Prim's Algorithm", command = lambda : graph.primsAlgorithm(canv))
-    btn.pack()
+def createSelectionGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas):
+    #creates the selected edge / vertex display
+    #and returns the text variables to be updated when necessary
+
+    selv_str = tk.StringVar(value = 'Selected Vertices:\n[]')
+
+    selectedv_label = ttk.Label(master = right_frame, textvariable = selv_str, font = FONT_SIZE)
+    selectedv_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='w')
+
+    sele_str = tk.StringVar(value = 'Selected Edges:\n[]')
+
+    selectede_label = ttk.Label(master = right_frame, textvariable = sele_str, font = FONT_SIZE)
+    selectede_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='w')
 
     return [selv_str, sele_str]
+
+def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas):
+
+    #################
+    #QUIZ RELATED ELEMENTS
+    #################
+
+    top_ui_frame = tk.Frame(master = app)
+    top_ui_frame.config(bg = app.cget('bg'))
+    top_ui_frame.pack(fill = 'x')
+
+    #back button
+    back_btn = ttk.Button(master = top_ui_frame, text="Back")
+    back_btn.pack(side='left', anchor='w', padx = INNER_PADDING, pady = INNER_PADDING)
+
+    #quiz number
+    question_num_txt = tk.StringVar(value = 'Question 1 of 10')
+    question_number = tk.Label(master = top_ui_frame, textvariable = question_num_txt, font = FONT_SIZE)
+    question_number.config(bg = app.cget('bg'))
+    question_number.pack(side = 'right',anchor='se',padx = INNER_PADDING, pady = INNER_PADDING)
+
+    #quiz question
+    question_txt = tk.StringVar(
+        value = "Create an MST for this graph using Prim's algorithm, given the starting vertex A."
+        )
+
+    question_txt_lbl = ttk.Label(master = right_frame, textvariable = question_txt,font = FONT_SIZE)
+
+    #wrapping works, but will not expand back out once squished??
+    question_txt_lbl.bind('<Configure>', lambda e: question_txt_lbl.config(wraplength= right_frame.winfo_width() - GUI_PADDING))
+    question_txt_lbl.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='w', side='top', fill = 'both')
+
+    #################
+    #CREATE SELECTION DISPLAY
+    #################
+
+    sel_label_var = createSelectionGui(app,graph,right_frame,canv)
+
+    #################
+    #CREATE BUTTONS
+    #################
+    
+    btn = ttk.Button(master = right_frame, text="Start Prim's Algorithm", command = lambda : graph.primsAlgorithm(canv))
+    btn.pack()
+
+    #right frame bottom buttons
+    nav_button_frame = tk.Frame(master = right_frame)
+    nav_button_frame.pack(side='bottom', fill = 'x')
+
+    mark_btn = ttk.Button(master = nav_button_frame, text="Mark")
+    mark_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
+    nextq_btn = ttk.Button(master = nav_button_frame, text=">")
+    nextq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
+    lastq_btn = ttk.Button(master = nav_button_frame, text="<")
+    lastq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
+    
+
+    return sel_label_var

@@ -5,7 +5,7 @@ import graph_objects as gobj
 import random as r
 import graph_gui as ggui
 
-CANVAS_COLOUR = 'white'
+CANVAS_COLOUR = ggui.CANV_COLOUR
 
 #=====================================================================#
 #GRAPH SPECIFIC FUNCTIONS
@@ -125,7 +125,7 @@ def clickedVertex(e, canv : tk.Canvas, graph : gobj.Graph, vertex_label : tk.Str
         #used to keep track of the order in which vertices are selected
         graph.selected_vertices.remove(vertex)
 
-    vertex_label.set('Selected Vertices: ' + ' , '.join(ggui.verticesToLabelText(graph.selected_vertices)) )
+    vertex_label.set('Selected Vertices:\n[' + ' , '.join(ggui.verticesToLabelText(graph.selected_vertices)) + ']' )
     
     
 
@@ -156,7 +156,7 @@ def clickedEdge(e, canv : tk.Canvas, graph : gobj.Graph,  edge_label : tk.String
         #used to keep track of the order in which edges are selected
         graph.selected_edges.remove(edge)
 
-    edge_label.set('Selected Edges: ' + ' , '.join(ggui.edgesToLabelText(graph.selected_edges))  )
+    edge_label.set('Selected Edges:\n[' + ' , '.join(ggui.edgesToLabelText(graph.selected_edges)) + ']')
 
 
 #=====================================================================#
