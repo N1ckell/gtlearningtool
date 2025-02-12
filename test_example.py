@@ -4,8 +4,9 @@ import graph_generation as ggen
 import graph_gui as ggui
 import custom_graph as cg
 
-WINDOW_BG = 'lightgrey'
-CANV_COLOUR = 'white'
+
+WINDOW_BG = 'thistle3'
+CANV_COLOUR = ggen.CANVAS_COLOUR
 CANV_PADDING = 50
 
 
@@ -20,11 +21,15 @@ win_height = app.winfo_screenheight()
 CANV_W = int(win_width // 2.5)
 CANV_H = int(win_height - (win_height // 4) )
 
+
+main_frame = tk.Frame(master = app)
+main_frame.config(bg = WINDOW_BG)
+main_frame.pack(padx = 50, pady=50, fill = 'both')
 #create canvas
-canv = ggen.createCanvas(app, CANV_W, CANV_H, CANV_COLOUR, CANV_PADDING)
+canv = ggui.createCanvas(main_frame, CANV_W, CANV_H, CANV_COLOUR, CANV_PADDING)
 
 #create side gui
-gui_frame = ggui.createGuiFrame(app)
+gui_frame = ggui.createGuiFrame(main_frame)
 
 #random generation (for testing)
 v_list = ggen.generateRandomVertices(CANV_W,CANV_H, 24)

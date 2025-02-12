@@ -5,19 +5,7 @@ import graph_objects as gobj
 import random as r
 import graph_gui as ggui
 
-#=====================================================================#
-#CANVAS CONFIG FUNCTIONS
-#=====================================================================#
-
-def createCanvas(app : ttk.Window,
-                 canv_w : int, canv_h : int,
-                 canv_colour : str, padding : int):
-    #create canvas
-    canv = tk.Canvas(app, width = canv_w, height = canv_h)
-    canv.config(bg = canv_colour)
-    canv.pack(padx = padding, pady= padding, side = 'left')
-
-    return canv
+CANVAS_COLOUR = 'white'
 
 #=====================================================================#
 #GRAPH SPECIFIC FUNCTIONS
@@ -59,8 +47,8 @@ def drawEdges(canv : tk.Canvas, edge_list : list[gobj.Edge]):
 
         label_bbox = canv.bbox(label)
         
-        label_outline = canv.create_oval(label_bbox, fill= edge.label_outline,
-                                            outline = edge.label_outline,
+        label_outline = canv.create_oval(label_bbox, fill= CANVAS_COLOUR,
+                                            outline = CANVAS_COLOUR,
                                             state = 'disabled')
 
         canv.tag_raise(label,label_outline)
