@@ -1,15 +1,22 @@
-class QuizQuestion():
-    def __init__(self, question : str, solution : str, marks : int = 1):
+import graph_objects as gobj
+
+class Question():
+    def __init__(self, question : str, graph : gobj.Graph, marks : int = 1):
         self.question = question
-        self.solution = solution
         self.marks = marks
+        self.graph = graph
+
+class PrimsQuestion(Question):
+    def __init__(self, solution : list[gobj.Edge], question, graph, marks = 1):
+        super().__init__(question, graph, marks)
+
+        self.solution = solution
 
 class Quiz():
-    def __init__(self, quiz_type : str,
-                 questions : dict[str , str],
-                 marking_type :str = 'None'):
+    def __init__(self,
+                 questions : dict[int , Question],
+                 marking_type : str = 'None'):
         
-        self.quiz_type = quiz_type
         self.questions = questions
         self.num_questions = len(questions)
         self.marking_type = marking_type

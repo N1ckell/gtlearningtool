@@ -43,9 +43,6 @@ class Vertex:
 
         #is the vertex currently selected
         self.state = state
-
-        #value used in prims algorithm
-        self.prims_value = m.inf
     
     def getCirclePoints(self, topLX, topLY):
         diameter = CIRCLE_RADIUS * 2
@@ -137,10 +134,10 @@ class Graph:
 
         return id
 
-    def primsAlgorithm(self, canv : tk.Canvas):
+    def primsAlgorithm(self, starting_vertex : Vertex):
         #init mst including starting vertex
         #starting_vertex = self.vertices(r.randint(0,len(self.vertices)))
-        starting_vertex = self.vertices[0]
+        #starting_vertex = self.vertices[0]
 
         #canv.itemconfig(self.getIdFromObj(starting_vertex, self.v_map), fill = 'green2')
         mst = [starting_vertex]
@@ -170,8 +167,9 @@ class Graph:
                 mst.append(current_vertex)
                 #canv.itemconfig(self.getIdFromObj(current_vertex, self.v_map), fill = 'green2')
                 chosen_edges.append(current_edge)
-                canv.itemconfig(self.getIdFromObj(current_edge, self.e_map), fill = 'green2')
-
+                #canv.itemconfig(self.getIdFromObj(current_edge, self.e_map), fill = 'green2')
+        
+        return chosen_edges
 
                 
 
