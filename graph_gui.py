@@ -2,6 +2,8 @@ import tkinter as tk
 import ttkbootstrap as ttk
 import graph_objects as gobj
 import quiz_objects as qobj
+import graph_generation as ggen
+import quiz_nav as qnav
 
 GUI_PADDING = 30
 LABEL_PADDING = 20
@@ -95,11 +97,15 @@ def drawQuizQuestion(frame : ttk.Frame, quiz : qobj.Quiz):
     question_txt_lbl.bind('<Configure>', lambda e: question_txt_lbl.config(wraplength= frame.winfo_width() - GUI_PADDING))
     question_txt_lbl.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='w', side='top', fill = 'both')
 
-def drawQuestionNavBtn(frame : ttk.Frame):
-    nextq_btn = ttk.Button(master = frame, text=">")
+
+
+def drawQuestionNavBtn(app : ttk.Window, quiz : qobj.Quiz, frame : ttk.Frame):
+    nextq_btn = ttk.Button(master = frame, text=">", command = lambda : qnav.nextQuestion(app, quiz))
     nextq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
-    lastq_btn = ttk.Button(master = frame, text="<")
+    lastq_btn = ttk.Button(master = frame, text="<", command = lambda : qnav.prevQuestion(app, quiz))
     lastq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
+
+
 
 def drawMarkBtn(frame : ttk.Frame):
     mark_btn = ttk.Button(master = frame, text="Show solution")
@@ -148,7 +154,18 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
 
     drawMarkBtn(nav_button_frame)
     
-    drawQuestionNavBtn(nav_button_frame)
+    drawQuestionNavBtn(app, quiz, nav_button_frame)
     
 
     return sel_label_var
+
+def drawGraph(app : ttk.Window, graph : gobj.Graph, canv : tk.Canvas, quiz : qobj.Quiz, parent_frame : tk.Frame):
+    #draw and get mapping
+    graph.e_map = ggen.drawEdges(canv, graph.edges)
+    graph.v_map = ggen.drawVertices(canv, graph.vertices)
+
+    #create gui labels
+    ggui_labels = createGraphGui(app, graph, parent_frame, canv, quiz)
+
+    #bind canvas objects to corresponding click functions
+    ggen.bindShapetoObj(canv, graph, ggui_labels)
