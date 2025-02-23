@@ -71,23 +71,23 @@ def createSelectionGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.F
 
     return [selv_str, sele_str]
 
-def drawQuizNumber(app : ttk.Window, frame : ttk.Frame):
-    question_num_txt = tk.StringVar(value = 'Question 1 of 10')
+def drawQuizNumber(app : ttk.Window, frame : ttk.Frame, quiz : qobj.Quiz):
+    question_num_txt = tk.StringVar(value = 'Question ' + str(quiz.current_question) + ' of ' + str(quiz.num_questions))
     question_number = tk.Label(master = frame, textvariable = question_num_txt, font = FONT_SIZE)
     question_number.config(bg = app.cget('bg'))
     question_number.pack(side = 'right',anchor='se',padx = INNER_PADDING, pady = INNER_PADDING)
 
-def drawQuizMarks(frame : ttk.Frame):
+def drawQuizMarks(frame : ttk.Frame, quiz : qobj.Quiz):
     marks_txt = tk.StringVar(
-        value = "[3 marks]"
+        value = "[" + str(quiz.questions[quiz.current_question].marks) + " Marks]"
         )
     
     mark_txt_label = tk.Label(master = frame, textvariable = marks_txt,font = FONT_SIZE)
     mark_txt_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='se', side='top')
 
-def drawQuizQuestion(frame : ttk.Frame):
+def drawQuizQuestion(frame : ttk.Frame, quiz : qobj.Quiz):
     question_txt = tk.StringVar(
-        value = "Create an MST for this graph using Prim's algorithm, given the starting vertex A."
+        value = (quiz.questions[quiz.current_question].question)
         )
     
     question_txt_lbl = tk.Label(master = frame, textvariable = question_txt,font = FONT_SIZE, anchor = 'w', justify = 'left')
@@ -102,10 +102,10 @@ def drawQuestionNavBtn(frame : ttk.Frame):
     lastq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
 def drawMarkBtn(frame : ttk.Frame):
-    mark_btn = ttk.Button(master = frame, text="Mark")
+    mark_btn = ttk.Button(master = frame, text="Show solution")
     mark_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
-def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas):
+def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz):
 
     #################
     #QUIZ RELATED ELEMENTS
@@ -120,13 +120,13 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
     back_btn.pack(side='left', anchor='w', padx = INNER_PADDING, pady = INNER_PADDING)
 
     #quiz number
-    drawQuizNumber(app, top_ui_frame)
+    drawQuizNumber(app, top_ui_frame, quiz)
     
     #quiz question
-    drawQuizQuestion(right_frame)
+    drawQuizQuestion(right_frame, quiz)
     
     #quiz marks
-    drawQuizMarks(right_frame)
+    drawQuizMarks(right_frame, quiz)
     
 
     #################
