@@ -7,6 +7,7 @@ class Question():
         self.marks = marks
         self.graph = graph
         self.solution = 'NULL'
+        self.solution_toggled = False
 
 class PrimsQuestion(Question):
     def __init__(self, graph : gobj.Graph, marks = 1):
