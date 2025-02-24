@@ -97,27 +97,34 @@ def drawQuizQuestion(frame : ttk.Frame, quiz : qobj.Quiz):
     question_txt_lbl.bind('<Configure>', lambda e: question_txt_lbl.config(wraplength= frame.winfo_width() - GUI_PADDING))
     question_txt_lbl.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, anchor='w', side='top', fill = 'both')
 
-def drawSolutionTxt(frame : ttk.Frame, quiz : qobj.Quiz):
+def getSolutionTxt(frame : ttk.Frame, quiz : qobj.Quiz):
     solution_txt = tk.StringVar(
-        value = '[' + ','.join(edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+        value = ''
         )
+    return solution_txt
     
+def drawSolutionLabel(frame : ttk.Frame, quiz : qobj.Quiz, solution_txt : tk.StringVar):
+
     solution_label = tk.Label(master = frame, textvariable = solution_txt ,font = FONT_SIZE)
-    solution_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, side='bottom')
+
+    solution_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, side='bottom', anchor='w')
+
+    return solution_label
 
 
 
 
 def drawQuestionNavBtn(app : ttk.Window, quiz : qobj.Quiz, frame : ttk.Frame):
-    nextq_btn = ttk.Button(master = frame, text=">", command = lambda : qnav.nextQuestion(app, quiz))
+    nextq_btn = ttk.Button(master = frame, text=">", command = lambda : qnav.nextQuestion(app, quiz), takefocus=False)
     nextq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
-    lastq_btn = ttk.Button(master = frame, text="<", command = lambda : qnav.prevQuestion(app, quiz))
+    lastq_btn = ttk.Button(master = frame, text="<", command = lambda : qnav.prevQuestion(app, quiz), takefocus=False)
     lastq_btn.pack(side='right', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
 
 
-def drawMarkBtn(frame : ttk.Frame):
-    mark_btn = ttk.Button(master = frame, text="Show solution")
+def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label):
+    btn_text = tk.StringVar(value = 'Show solution')
+    mark_btn = ttk.Button(master = frame, textvariable = btn_text, command= lambda : qnav.toggleSolution(quiz, solution_text, btn_text), takefocus=False)
     mark_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
 def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz):
@@ -131,7 +138,7 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
     top_ui_frame.pack(fill = 'x')
 
     #back button
-    back_btn = ttk.Button(master = top_ui_frame, text="Back to main menu")
+    back_btn = ttk.Button(master = top_ui_frame, text="Back to main menu", takefocus=False)
     back_btn.pack(side='left', anchor='w', padx = INNER_PADDING, pady = INNER_PADDING)
 
     #quiz number
@@ -161,9 +168,11 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
     nav_button_frame = tk.Frame(master = right_frame)
     nav_button_frame.pack(side='bottom', fill = 'x')
 
-    drawSolutionTxt(right_frame, quiz)
+    solution_txt = getSolutionTxt(right_frame, quiz)
 
-    drawMarkBtn(nav_button_frame)
+    solution_label = drawSolutionLabel(right_frame, quiz, solution_txt)
+
+    drawMarkBtn(nav_button_frame, quiz, solution_txt)
     
     drawQuestionNavBtn(app, quiz, nav_button_frame)
     

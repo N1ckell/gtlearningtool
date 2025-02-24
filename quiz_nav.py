@@ -11,6 +11,29 @@ def clearWindow(app: ttk.Window):
     for w in app.winfo_children():
         w.pack_forget()
 
+def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, btn_txt : tk.StringVar):
+
+    #print(solution_text.get())
+
+    hidden_str = ''
+    shown_str = 'Solution: [' + ','.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+    
+ 
+    quiz.questions[quiz.current_question].solution_toggled = not(quiz.questions[quiz.current_question].solution_toggled)
+    toggle = quiz.questions[quiz.current_question].solution_toggled
+ 
+
+    if toggle:
+        #display solution
+        solution_text.set(shown_str)
+        btn_txt.set('Hide solution')
+
+    else:
+        #hide solution
+        solution_text.set(hidden_str)
+        btn_txt.set('Show solution')
+
+
 def getSelectedGobj(quiz : qobj.Quiz):
     #redefines which vertices were selected
         for selected_vertex in quiz.questions[quiz.current_question].graph.selected_vertices:
