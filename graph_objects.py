@@ -108,6 +108,10 @@ class Graph:
         self.v_map : dict[int , Vertex] = {}
         self.e_map : dict[int , Edge] = {}
 
+    def clearSelectedGobj(self):
+        self.selected_edges = []
+        self.selected_vertices = []
+
     def getAdjacentVertices(self, vertex : Vertex):
         #returns the adjacent vertices and the
         #edge connecting it to given vertex
@@ -166,7 +170,9 @@ class Graph:
             if current_vertex:
                 mst.append(current_vertex)
                 #canv.itemconfig(self.getIdFromObj(current_vertex, self.v_map), fill = 'green2')
+                #current_vertex.state = True
                 chosen_edges.append(current_edge)
+                #current_edge.state = True
                 #canv.itemconfig(self.getIdFromObj(current_edge, self.e_map), fill = 'green2')
         
         return chosen_edges

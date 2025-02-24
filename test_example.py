@@ -1,7 +1,7 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 import graph_generation as ggen
-import graph_gui as ggui
+import quiz_gui as qgui
 import graph_objects as gobj
 import custom_graph as cg
 import quiz_objects as qobj
@@ -17,6 +17,9 @@ app.config(background = WINDOW_BG)
 #starts the window maximised
 app.state('zoomed')
 
-qnav.drawQuizScreen(app)
+#create quiz obj
+quiz = cq.generateQuiz1(10)
+
+qnav.drawQuizScreen(app, quiz)
 
 app.mainloop()

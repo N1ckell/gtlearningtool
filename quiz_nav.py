@@ -1,5 +1,5 @@
 import tkinter as tk
-import graph_gui as ggui
+import quiz_gui as qgui
 import ttkbootstrap as ttk
 import quiz_objects as qobj
 import custom_quiz as cq
@@ -11,8 +11,20 @@ def clearWindow(app: ttk.Window):
     for w in app.winfo_children():
         w.pack_forget()
 
-def drawQuizScreen(app : ttk.Window,):
+def getSelectedGobj(quiz : qobj.Quiz):
+    #redefines which vertices were selected
+        for selected_vertex in quiz.questions[quiz.current_question].graph.selected_vertices:
+            for vertex in quiz.questions[quiz.current_question].graph.vertices:
+                if selected_vertex == vertex:
+                    vertex.state = True
 
+        #redefines which edges were selected
+        for selected_edge in quiz.questions[quiz.current_question].graph.selected_edges:
+            for edge in quiz.questions[quiz.current_question].graph.edges:
+                if selected_edge == edge:
+                    edge.state = True
+
+def drawQuizScreen(app : ttk.Window, quiz : qobj.Quiz):
     win_width = app.winfo_screenwidth()
     win_height = app.winfo_screenheight()
 
@@ -20,7 +32,7 @@ def drawQuizScreen(app : ttk.Window,):
     CANV_H = int(win_height - (win_height // 4) )
 
     #create initial gui
-    gui_elements = ggui.initGraphGui(app,CANV_W, CANV_H)
+    gui_elements = qgui.initGraphGui(app,CANV_W, CANV_H)
 
     canv = gui_elements[0]
     right_frame = gui_elements[1]
@@ -29,16 +41,13 @@ def drawQuizScreen(app : ttk.Window,):
     #v_list = ggen.generateRandomVertices(CANV_W,CANV_H, 24)
     #e_list = ggen.generateRandomEdges(v_list, 1, 20)
 
-    #create quiz obj
-    quiz = cq.custom_quiz
-
     #current question
     current_question = quiz.current_question
 
     #create graph obj
     graph = quiz.questions[current_question].graph
 
-    ggui.drawGraph(app,graph,canv,quiz,right_frame)
+    qgui.drawGraph(app,graph,canv,quiz,right_frame)
 
 def nextQuestion(app : ttk.Window, quiz : qobj.Quiz):
     #there is a slight delay between clearing the screen and drawing new objects.
@@ -51,7 +60,10 @@ def nextQuestion(app : ttk.Window, quiz : qobj.Quiz):
 
         #clears the window, then redraws the screen with the new current question
         clearWindow(app)
-        drawQuizScreen(app)
+        getSelectedGobj(quiz)
+        drawQuizScreen(app, quiz)
+
+        
     
     #if on last question
     else:
@@ -69,7 +81,8 @@ def prevQuestion(app : ttk.Window, quiz : qobj.Quiz):
 
         #clears the window, then redraws the screen with the new current question
         clearWindow(app)
-        drawQuizScreen(app)
+        getSelectedGobj(quiz)
+        drawQuizScreen(app, quiz)
     
     #nothing happens if on first question - button will do nothing.
     
