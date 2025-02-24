@@ -3,9 +3,9 @@ import ttkbootstrap as ttk
 import string
 import graph_objects as gobj
 import random as r
-import graph_gui as ggui
+import quiz_gui as qgui
 
-CANVAS_COLOUR = ggui.CANV_COLOUR
+CANVAS_COLOUR = qgui.CANV_COLOUR
 
 #=====================================================================#
 #GRAPH SPECIFIC FUNCTIONS
@@ -27,14 +27,29 @@ def drawEdges(canv : tk.Canvas, edge_list : list[gobj.Edge]):
     edge_map : dict[int , gobj.Edge] = {}
 
     for edge in edge_list:
-        drawn_edge = canv.create_line(
-            edge.pos1[0],edge.pos1[1],
-            edge.pos2[0],edge.pos2[1],
-            width = edge.width,
-            fill = edge.colour,
-            activewidth = edge.active_width,
-            tags = 'edge'
-        )
+
+        #if edge isn't selected
+        if edge.state == False:
+            drawn_edge = canv.create_line(
+                edge.pos1[0],edge.pos1[1],
+                edge.pos2[0],edge.pos2[1],
+                width = edge.width,
+                fill = edge.colour,
+                activewidth = edge.active_width,
+                tags = 'edge'
+            )
+        
+        #if edge is selected
+        else:
+            drawn_edge = canv.create_line(
+                edge.pos1[0],edge.pos1[1],
+                edge.pos2[0],edge.pos2[1],
+                width = edge.active_width,
+                fill = edge.active_colour,
+                activewidth = edge.active_width,
+                tags = 'edge'
+            )
+
 
         edge_map[drawn_edge] = edge
 
@@ -65,19 +80,36 @@ def drawVertices(canv : tk.Canvas, vertex_list : list[gobj.Vertex]):
 
     for vertex in vertex_list:
 
-        drawn_vertex = canv.create_oval(
-            vertex.tk_circle_points[0],
-            vertex.tk_circle_points[1],
-            vertex.tk_circle_points[2],
-            vertex.tk_circle_points[3],
-            fill = vertex.fill,
-            activefill = vertex.active_fill,
-            outline = vertex.outline,
-            activeoutline = vertex.active_outline,
-            width = vertex.width,
-            activewidth = vertex.active_width,
-            tags = 'vertex'
-        )
+        #if vertex not selected
+        if vertex.state == False:
+            drawn_vertex = canv.create_oval(
+                vertex.tk_circle_points[0],
+                vertex.tk_circle_points[1],
+                vertex.tk_circle_points[2],
+                vertex.tk_circle_points[3],
+                fill = vertex.fill,
+                activefill = vertex.active_fill,
+                outline = vertex.outline,
+                activeoutline = vertex.active_outline,
+                width = vertex.width,
+                activewidth = vertex.active_width,
+                tags = 'vertex'
+            )
+
+        else:
+                drawn_vertex = canv.create_oval(
+                vertex.tk_circle_points[0],
+                vertex.tk_circle_points[1],
+                vertex.tk_circle_points[2],
+                vertex.tk_circle_points[3],
+                fill = vertex.active_fill,
+                activefill = vertex.active_fill,
+                outline = vertex.active_outline,
+                activeoutline = vertex.active_outline,
+                width = vertex.active_width,
+                activewidth = vertex.active_width,
+                tags = 'vertex'
+            )
 
         #maps each vertex object to it's drawn counterpart
         #on the canvas into a dict
@@ -125,7 +157,7 @@ def clickedVertex(e, canv : tk.Canvas, graph : gobj.Graph, vertex_label : tk.Str
         #used to keep track of the order in which vertices are selected
         graph.selected_vertices.remove(vertex)
 
-    vertex_label.set('Selected Vertices:\n[' + ' , '.join(ggui.verticesToLabelText(graph.selected_vertices)) + ']' )
+    vertex_label.set('Selected Vertices:\n[' + ' , '.join(qgui.verticesToLabelText(graph.selected_vertices)) + ']' )
     
     
 
@@ -156,7 +188,7 @@ def clickedEdge(e, canv : tk.Canvas, graph : gobj.Graph,  edge_label : tk.String
         #used to keep track of the order in which edges are selected
         graph.selected_edges.remove(edge)
 
-    edge_label.set('Selected Edges:\n[' + ' , '.join(ggui.edgesToLabelText(graph.selected_edges)) + ']')
+    edge_label.set('Selected Edges:\n[' + ' , '.join(qgui.edgesToLabelText(graph.selected_edges)) + ']')
 
 
 #=====================================================================#
