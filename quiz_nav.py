@@ -11,27 +11,29 @@ def clearWindow(app: ttk.Window):
     for w in app.winfo_children():
         w.pack_forget()
 
-def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, btn_txt : tk.StringVar):
+def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, btn_txt : tk.StringVar, canv : tk.Canvas):
 
     #print(solution_text.get())
+    quiz.questions[quiz.current_question].markQuestion()
 
     hidden_str = ''
-    shown_str = 'Solution: [' + ','.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+    shown_str = 'Solution: [' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
     
  
     quiz.questions[quiz.current_question].solution_toggled = not(quiz.questions[quiz.current_question].solution_toggled)
     toggle = quiz.questions[quiz.current_question].solution_toggled
  
-
     if toggle:
         #display solution
         solution_text.set(shown_str)
         btn_txt.set('Hide solution')
+        quiz.questions[quiz.current_question].graph.markEdges(canv, quiz.questions[quiz.current_question].solution)
 
     else:
         #hide solution
         solution_text.set(hidden_str)
         btn_txt.set('Show solution')
+        quiz.questions[quiz.current_question].graph.colourEdges(canv)
 
 
 def getSelectedGobj(quiz : qobj.Quiz):
@@ -66,6 +68,7 @@ def drawQuizScreen(app : ttk.Window, quiz : qobj.Quiz):
 
     #current question
     current_question = quiz.current_question
+    quiz.questions[quiz.current_question].solution_toggled = False
 
     #create graph obj
     graph = quiz.questions[current_question].graph
@@ -73,7 +76,7 @@ def drawQuizScreen(app : ttk.Window, quiz : qobj.Quiz):
     qgui.drawGraph(app,graph,canv,quiz,right_frame)
 
 def nextQuestion(app : ttk.Window, quiz : qobj.Quiz):
-    #there is a slight delay between clearing the screen and drawing new objects.
+    #there is a slight delay between clearing the screen and drawing new objects, causing flicker
     #this could be made less noticeable by updating only the text and graph as opposed to all of
     #the frames and buttons, but this is not a priority.
 
@@ -94,7 +97,7 @@ def nextQuestion(app : ttk.Window, quiz : qobj.Quiz):
     
 
 def prevQuestion(app : ttk.Window, quiz : qobj.Quiz):
-    #there is a slight delay between clearing the screen and drawing new objects.
+    #there is a slight delay between clearing the screen and drawing new objects, causing flicker
     #this could be made less noticeable by updating only the text and graph as opposed to all of
     #the frames and buttons, but this is not a priority.
 

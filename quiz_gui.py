@@ -122,9 +122,9 @@ def drawQuestionNavBtn(app : ttk.Window, quiz : qobj.Quiz, frame : ttk.Frame):
 
 
 
-def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label):
+def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label, canv : tk.Canvas):
     btn_text = tk.StringVar(value = 'Show solution')
-    mark_btn = ttk.Button(master = frame, textvariable = btn_text, command= lambda : qnav.toggleSolution(quiz, solution_text, btn_text), takefocus=False)
+    mark_btn = ttk.Button(master = frame, textvariable = btn_text, command= lambda : qnav.toggleSolution(quiz, solution_text, btn_text, canv), takefocus=False)
     mark_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
 def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz):
@@ -172,7 +172,7 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
 
     solution_label = drawSolutionLabel(right_frame, quiz, solution_txt)
 
-    drawMarkBtn(nav_button_frame, quiz, solution_txt)
+    drawMarkBtn(nav_button_frame, quiz, solution_txt, canv)
     
     drawQuestionNavBtn(app, quiz, nav_button_frame)
     
