@@ -137,6 +137,46 @@ class Graph:
         id = list(filter(lambda obj: target_dict[obj] == target_obj, target_dict))
 
         return id
+    
+    def colourEdges(self, canv : tk.Canvas):
+
+        for edge_id in self.e_map:
+            for edge in self.edges:
+
+                if self.e_map[edge_id] == edge:
+
+                    if edge.state == False:
+                        canv.itemconfig(edge_id, fill = 'black')
+
+                    else:
+                        canv.itemconfig(edge_id, fill = 'magenta')
+    
+    def markEdges(self, canv : tk.Canvas, edge_list: list[Edge]):
+
+        for edge_id in self.e_map:
+            if self.e_map[edge_id].state == True:
+                canv.itemconfig(edge_id, fill = 'red')
+
+        #for all of the edge ids
+        for edge_id in self.e_map:
+            #and for all of the edges in the given prims solution
+            for edge in edge_list:
+                #(this if is just used so we have the id for the edge)
+
+    
+                if self.e_map[edge_id] == edge:
+
+                    #if the user has selected the edge, make it green
+                    if edge.state == True:
+                        canv.itemconfig(edge_id, fill = 'green2')
+                    
+                    #if the user hasn't selected the edge, make it orange
+                    else:
+                        canv.itemconfig(edge_id, fill = 'orange')
+                
+                
+                        
+
 
     def primsAlgorithm(self, starting_vertex : Vertex):
         #init mst including starting vertex
