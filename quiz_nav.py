@@ -11,13 +11,30 @@ def clearWindow(app: ttk.Window):
     for w in app.winfo_children():
         w.pack_forget()
 
-def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, btn_txt : tk.StringVar, canv : tk.Canvas):
+def clearGraphSelections(quiz : qobj.Quiz, canv : tk.Canvas,
+                        selected_v : tk.StringVar, selected_e : tk.StringVar,
+                         sol_txt : tk.StringVar, sol_btn_txt : tk.StringVar, marks_txt : tk.StringVar):
+    
+    quiz.questions[quiz.current_question].graph.selected_edges = []
+    quiz.questions[quiz.current_question].graph.selected_vertices = []
 
-    #print(solution_text.get())
+    quiz.questions[quiz.current_question].solution_toggled = False
+    sol_txt.set('')
+    sol_btn_txt.set('Show solution')
+    marks_txt.set('')
+    quiz.questions[quiz.current_question].graph.defaultGraph(canv)
+
+    selected_v.set(value = 'Selected Vertices:\n[' + ' , '.join(qgui.verticesToLabelText(quiz.questions[quiz.current_question].graph.selected_vertices)) + ']' )
+
+    selected_e.set(value = 'Selected Edges:\n[' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].graph.selected_edges)) + ']')
+
+def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, awarded_marks : tk.StringVar, btn_txt : tk.StringVar, canv : tk.Canvas):
+
     quiz.questions[quiz.current_question].markQuestion()
 
     hidden_str = ''
-    shown_str = 'Solution: [' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+    shown_solution = 'Solution: [' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+    shown_marks = "Awarded " + str(quiz.questions[quiz.current_question].markQuestion()) + " out of " + str(quiz.questions[quiz.current_question].marks) + " marks"
     
  
     quiz.questions[quiz.current_question].solution_toggled = not(quiz.questions[quiz.current_question].solution_toggled)
@@ -25,13 +42,15 @@ def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, btn_txt : tk.
  
     if toggle:
         #display solution
-        solution_text.set(shown_str)
+        solution_text.set(shown_solution)
+        awarded_marks.set(shown_marks)
         btn_txt.set('Hide solution')
         quiz.questions[quiz.current_question].graph.markEdges(canv, quiz.questions[quiz.current_question].solution)
 
     else:
         #hide solution
         solution_text.set(hidden_str)
+        awarded_marks.set(hidden_str)
         btn_txt.set('Show solution')
         quiz.questions[quiz.current_question].graph.colourEdges(canv)
 
@@ -57,10 +76,11 @@ def drawQuizScreen(app : ttk.Window, quiz : qobj.Quiz):
     CANV_H = int(win_height - (win_height // 4) )
 
     #create initial gui
-    gui_elements = qgui.initGraphGui(app,CANV_W, CANV_H)
+    gui_elements = qgui.initGraphGui(app,CANV_W, CANV_H, quiz)
 
     canv = gui_elements[0]
     right_frame = gui_elements[1]
+    canv_frame = gui_elements[2]
 
     #random generation (for testing)
     #v_list = ggen.generateRandomVertices(CANV_W,CANV_H, 24)
@@ -73,7 +93,7 @@ def drawQuizScreen(app : ttk.Window, quiz : qobj.Quiz):
     #create graph obj
     graph = quiz.questions[current_question].graph
 
-    qgui.drawGraph(app,graph,canv,quiz,right_frame)
+    qgui.drawGraph(app,graph,canv,quiz,right_frame, canv_frame)
 
 def nextQuestion(app : ttk.Window, quiz : qobj.Quiz):
     #there is a slight delay between clearing the screen and drawing new objects, causing flicker

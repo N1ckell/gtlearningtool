@@ -13,15 +13,31 @@ FONT_SIZE = 'Calibri 20'
 CANV_COLOUR = 'white'
 CANV_PADDING = 50
 
-def createCanvas(app : ttk.Window,
+def createCanvasFrame(app : ttk.Window):
+    canv_frame = tk.Frame(app)
+    canv_frame.pack(padx = INNER_PADDING, pady = INNER_PADDING, side = 'left', fill = 'both')
+
+    return canv_frame
+
+def createCanvas(frame: ttk.Frame,
                  canv_w : int, canv_h : int,
                  canv_colour : str):
     #create canvas
-    canv = tk.Canvas(app, width = canv_w, height = canv_h)
+    
+    canv = tk.Canvas(frame, width = canv_w, height = canv_h)
     canv.config(background= canv_colour)
-    canv.pack(padx = INNER_PADDING, pady = INNER_PADDING, side = 'left', fill = 'both')
+    canv.pack(padx = INNER_PADDING, pady = INNER_PADDING, side = 'top', fill = 'both')
 
     return canv
+
+def createClearBtn(frame : ttk.Frame, quiz : qobj.Quiz, canv : tk.Canvas,
+                   sel_v : tk.StringVar, sel_e : tk.StringVar,
+                   sol_txt : tk.StringVar, sol_btn_txt : tk.StringVar, marks_txt : tk.StringVar):
+
+    clear_btn = ttk.Button(frame, text = 'Clear selections', command = lambda : qnav.clearGraphSelections(quiz, canv, sel_v, sel_e, sol_txt, sol_btn_txt, marks_txt))
+    clear_btn.pack(side='bottom', anchor='w', padx = LABEL_PADDING, pady = LABEL_PADDING)
+
+    return clear_btn
 
 def verticesToLabelText(vertex_list : list[gobj.Vertex]):
     return [vertex.label for vertex in vertex_list]
@@ -42,19 +58,23 @@ def createGuiFrame(app: ttk.Window):
                    padx = INNER_PADDING, pady = INNER_PADDING)
     return gui_frame
 
-def initGraphGui(app : ttk.Window, CANV_W: int, CANV_H : int):
+def initGraphGui(app : ttk.Window, CANV_W: int, CANV_H : int, quiz : qobj.Quiz):
 
     main_frame = tk.Frame(master = app)
     main_frame.config(bg = app.cget('background'))
     main_frame.pack(side = 'bottom', fill = 'both', expand = True)
+
+    #canvas frame
+    canvas_frame = createCanvasFrame(main_frame)
+
     #create canvas
-    canv = createCanvas(main_frame, CANV_W, CANV_H, CANV_COLOUR)
+    canv = createCanvas(canvas_frame, CANV_W, CANV_H, CANV_COLOUR)
 
     #create side gui
     gui_frame = createGuiFrame(main_frame)
 
     #return so canvas can be worked with
-    return [canv, gui_frame]
+    return [canv, gui_frame, canvas_frame]
 
 def createSelectionGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas):
     #creates the selected edge / vertex display
@@ -102,6 +122,14 @@ def getSolutionTxt(frame : ttk.Frame, quiz : qobj.Quiz):
         value = ''
         )
     return solution_txt
+
+def drawAwardedMarksLabel(frame : ttk.Frame, quiz : qobj.Quiz, marks_txt : tk.StringVar):
+
+    awarded_marks_label = tk.Label(master = frame, textvariable = marks_txt ,font = FONT_SIZE)
+
+    awarded_marks_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, side='bottom', anchor='w')
+
+    return awarded_marks_label
     
 def drawSolutionLabel(frame : ttk.Frame, quiz : qobj.Quiz, solution_txt : tk.StringVar):
 
@@ -122,12 +150,14 @@ def drawQuestionNavBtn(app : ttk.Window, quiz : qobj.Quiz, frame : ttk.Frame):
 
 
 
-def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label, canv : tk.Canvas):
+def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label, awarded_marks : tk.StringVar, canv : tk.Canvas):
     btn_text = tk.StringVar(value = 'Show solution')
-    mark_btn = ttk.Button(master = frame, textvariable = btn_text, command= lambda : qnav.toggleSolution(quiz, solution_text, btn_text, canv), takefocus=False)
+    mark_btn = ttk.Button(master = frame, textvariable = btn_text, command= lambda : qnav.toggleSolution(quiz, solution_text, awarded_marks, btn_text, canv), takefocus=False)
     mark_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
 
-def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz):
+    return btn_text
+
+def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz, canv_frame : tk.Canvas):
 
     #################
     #QUIZ RELATED ELEMENTS
@@ -164,28 +194,41 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
     #btn = ttk.Button(master = right_frame, text="Start Prim's Algorithm", command = lambda : graph.primsAlgorithm(canv))
     #btn.pack()
 
+    
+
     #right frame bottom buttons
     nav_button_frame = tk.Frame(master = right_frame)
     nav_button_frame.pack(side='bottom', fill = 'x')
 
     solution_txt = getSolutionTxt(right_frame, quiz)
+    display_given_marks = tk.StringVar(value = '')
 
-    solution_label = drawSolutionLabel(right_frame, quiz, solution_txt)
+    drawAwardedMarksLabel(right_frame, quiz, display_given_marks)
 
-    drawMarkBtn(nav_button_frame, quiz, solution_txt, canv)
+    drawSolutionLabel(right_frame, quiz, solution_txt)
+
+    mark_btn_txt = drawMarkBtn(nav_button_frame, quiz, solution_txt, display_given_marks, canv)
     
     drawQuestionNavBtn(app, quiz, nav_button_frame)
-    
 
+    sel_label_var.append(solution_txt)
+    sel_label_var.append(mark_btn_txt)
+    sel_label_var.append(display_given_marks)
+
+    #left frame buttons
+    #create selection clear btn
+    sel_clear_btn = createClearBtn(canv_frame, quiz, canv, 
+                                   sel_label_var[0], sel_label_var[1], sel_label_var[2], sel_label_var[3], sel_label_var[4])
+    
     return sel_label_var
 
-def drawGraph(app : ttk.Window, graph : gobj.Graph, canv : tk.Canvas, quiz : qobj.Quiz, parent_frame : tk.Frame):
+def drawGraph(app : ttk.Window, graph : gobj.Graph, canv : tk.Canvas, quiz : qobj.Quiz, parent_frame : tk.Frame, canv_frame : ttk.Frame):
     #draw and get mapping
     graph.e_map = ggen.drawEdges(canv, graph.edges)
     graph.v_map = ggen.drawVertices(canv, graph.vertices)
 
     #create gui labels
-    ggui_labels = createGraphGui(app, graph, parent_frame, canv, quiz)
+    ggui_labels = createGraphGui(app, graph, parent_frame, canv, quiz, canv_frame)
 
     #bind canvas objects to corresponding click functions
     ggen.bindShapetoObj(canv, graph, ggui_labels)
