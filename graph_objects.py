@@ -138,6 +138,42 @@ class Graph:
 
         return id
     
+    def defaultGraph(self, canv : tk.Canvas):
+
+        for edge_id in self.e_map:
+            for edge in self.edges:
+
+                edge.state = False
+                edge.width = 3
+                edge.colour = 'black'
+                edge.active_colour = 'magenta'
+                edge.active_width = edge.width * 2
+
+                canv.itemconfig(edge_id, fill = edge.colour)
+                canv.itemconfig(edge_id, width = edge.width)
+                canv.itemconfig(edge_id, activefill = edge.active_colour)
+                canv.itemconfig(edge_id, activewidth = edge.active_width)
+
+        for vertex_id in self.v_map:
+            for vertex in self.vertices:
+
+                vertex.state = False
+                vertex.fill = 'purple4'
+                vertex.outline = 'black'
+                vertex.active_fill = 'magenta1'
+                vertex.active_outline = 'magenta4'
+                vertex.width = 2
+                vertex.label_colour = 'white'
+
+                canv.itemconfig(vertex_id, fill = vertex.fill)
+                canv.itemconfig(vertex_id, width = vertex.width)
+                canv.itemconfig(vertex_id, activefill = vertex.active_fill)
+                canv.itemconfig(vertex_id, activewidth = vertex.active_width)
+                canv.itemconfig(vertex_id, activeoutline = vertex.active_outline)
+                canv.itemconfig(vertex_id, outline = vertex.outline)
+                
+
+    
     def colourEdges(self, canv : tk.Canvas):
 
         for edge_id in self.e_map:
