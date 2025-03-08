@@ -136,7 +136,7 @@ def drawAwardedMarksLabel(frame : ttk.Frame, quiz : qobj.Quiz, marks_txt : tk.St
     
 def drawSolutionLabel(frame : ttk.Frame, quiz : qobj.Quiz, solution_txt : tk.StringVar):
 
-    solution_label = tk.Label(master = frame, textvariable = solution_txt ,font = FONT_SIZE)
+    solution_label = tk.Label(master = frame, textvariable = solution_txt ,font = FONT_SIZE, justify='left')
 
     solution_label.pack(padx = LABEL_PADDING, pady=LABEL_PADDING, side='bottom', anchor='w')
 

@@ -35,10 +35,10 @@ def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, awarded_marks
     hidden_str = ''
 
     if primsQuestion(quiz.questions[quiz.current_question]):
-        shown_solution = 'Solution: [' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+        shown_solution = 'Solution:\n[' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
     
     elif kruskalsQuestion(quiz.questions[quiz.current_question]):
-        shown_solution = 'Solution: [' + ' , '.join(qgui.verticesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
+        shown_solution = 'Solution:\n[' + ' , '.join(qgui.edgesToLabelText(quiz.questions[quiz.current_question].solution)) + ']'
     
     shown_marks = "Awarded " + str(quiz.questions[quiz.current_question].markQuestion()) + " out of " + str(quiz.questions[quiz.current_question].marks) + " marks"
 
@@ -55,7 +55,7 @@ def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, awarded_marks
             quiz.questions[quiz.current_question].graph.markEdges(canv, quiz.questions[quiz.current_question].solution)
 
         elif kruskalsQuestion(quiz.questions[quiz.current_question]):
-            quiz.questions[quiz.current_question].graph.markVertices(canv, quiz.questions[quiz.current_question].solution)
+            quiz.questions[quiz.current_question].graph.markEdges(canv, quiz.questions[quiz.current_question].solution)
 
 
     else:
@@ -64,7 +64,7 @@ def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, awarded_marks
         awarded_marks.set(hidden_str)
         btn_txt.set('Show solution')
         quiz.questions[quiz.current_question].graph.colourEdges(canv)
-        quiz.questions[quiz.current_question].graph.colourVertices(canv)
+        quiz.questions[quiz.current_question].graph.colourEdges(canv)
 
 
 def getSelectedGobj(quiz : qobj.Quiz):

@@ -14,7 +14,6 @@ def gotoQuizCreation(app : ttk.Window):
 def gotoQuiz(app : ttk.Window, combobox : ttk.Combobox):
     af.clearWindow(app)
     quiz = cq.generateQuiz2(int(combobox.get()))
-    #print(isinstance(quiz.questions[quiz.current_question], qobj.KruskalsQuestion))
     qm.initQuiz(app, quiz)
 
 
