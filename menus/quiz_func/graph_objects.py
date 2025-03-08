@@ -296,6 +296,7 @@ class Graph:
         parent = {}
         for vertex in self.vertices:
             #all vertices, by default, are their own parent
+            #as each vertex is in it's own 'set'
             parent[vertex] = vertex
 
            
@@ -335,7 +336,7 @@ class Graph:
                 self.union(parent, v1parent, v2parent)
 
         
-        return chosen_vertices
+        return chosen_edges
             
             
 

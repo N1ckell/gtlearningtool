@@ -14,7 +14,7 @@ class KruskalsQuestion(Question):
         
         super().__init__(graph, marks)
 
-        self.question = "Select the correct order of vertices and edges to create an MST for this graph using Kruskal's algorithm."
+        self.question = "Select the correct order of edges to create an MST for this graph using Kruskal's algorithm."
 
         self.solution = graph.kruskalsAlgorithm()
 
@@ -25,17 +25,17 @@ class KruskalsQuestion(Question):
 
         #for every edge which matches the order
         #of the solution, award a mark
-        if len(self.graph.selected_vertices) > 0:
+        if len(self.graph.selected_edges) > 0:
             for i in range (0,len(self.solution)):
-                if not(i > len(self.graph.selected_vertices) - 1):
-                    if self.graph.selected_vertices[i] == self.solution[i]:
+                if not(i > len(self.graph.selected_edges) - 1):
+                    if self.graph.selected_edges[i] == self.solution[i]:
                         awarded_marks += 1
 
             #take away a mark for every edge selected
             #over the number within the solution
 
-        if len(self.solution) < len(self.graph.selected_vertices):
-            awarded_marks -= (len(self.graph.selected_vertices) - len(self.solution))
+        if len(self.solution) < len(self.graph.selected_edges):
+            awarded_marks -= (len(self.graph.selected_edges) - len(self.solution))
 
         if awarded_marks < 0:
             awarded_marks = 0
