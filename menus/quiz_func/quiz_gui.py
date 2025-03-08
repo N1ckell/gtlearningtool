@@ -40,6 +40,13 @@ def createClearBtn(frame : ttk.Frame, quiz : qobj.Quiz, canv : tk.Canvas,
 
     return clear_btn
 
+def createNextStepBtn(frame : ttk.Frame, quiz : qobj.Quiz, canv : tk.Canvas):
+
+    next_step_btn = ttk.Button(frame, text = 'Show the next step', takefocus=False, command = lambda : qnav.showNextStep(quiz, canv))
+    next_step_btn.pack(side='left', padx = LABEL_PADDING, pady = LABEL_PADDING)
+
+    return next_step_btn
+
 def verticesToLabelText(vertex_list : list[gobj.Vertex]):
     return [vertex.label for vertex in vertex_list]
 
@@ -217,14 +224,21 @@ def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame
     
     drawQuestionNavBtn(app, quiz, nav_button_frame)
 
+    #create 'next step' button
+    next_step_btn = createNextStepBtn(nav_button_frame, quiz, canv)
+
     sel_label_var.append(solution_txt)
     sel_label_var.append(mark_btn_txt)
     sel_label_var.append(display_given_marks)
 
     #left frame buttons
+
+    #lbtn_frame = tk.Frame(canv_frame).pack()
     #create selection clear btn
     sel_clear_btn = createClearBtn(canv_frame, quiz, canv, 
                                    sel_label_var[0], sel_label_var[1], sel_label_var[2], sel_label_var[3], sel_label_var[4])
+    
+    
     
     return sel_label_var
 
