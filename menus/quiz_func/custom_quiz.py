@@ -2,29 +2,57 @@ import menus.quiz_func.quiz_objects as qobj
 import menus.quiz_func.custom_graph as cg
 import random as r
 
+TYPES_OF_GRAPH  = 5
+
+def getRandomGraph():
+    n = r.randint(1,5)
+
+    if n == 1:
+        return cg.getRandomGraph1()
+    
+    elif n == 2:
+        return cg.getRandomGraph2()
+
+    elif n == 3:
+        return cg.getRandomGraph3()
+
+    elif n == 4:
+        return cg.getRandomGraph4()
+
+    elif n == 5:
+        return cg.getRandomGraph5()
+
 def generatePrimsQuestion():
-    return qobj.PrimsQuestion(graph = cg.getRandomGraph1(), marks = 5)
+    return qobj.PrimsQuestion(graph = getRandomGraph(), marks = 5)
 
 def generateKruskalsQuestion():
-    return qobj.KruskalsQuestion(graph = cg.getRandomGraph1(), marks = 5)
+    return qobj.KruskalsQuestion(graph = getRandomGraph(), marks = 5)
 
 
-def generateQuiz1(num_questions : int):
+def generateQuiz(num_questions : int, question_type : str):
+
     questions = {}
 
-    for i in range(1, num_questions + 1):
-        questions[i] = generatePrimsQuestion()
+    for i in range (1, num_questions + 1):
 
+        if question_type == 'Include All':
+            random_question_type = r.randint(1,2)
+        
+        elif question_type == "Prim's Algorithm":
+            random_question_type = 1
+        
+        elif question_type == "Kruskal's Algorithm":
+            random_question_type = 2
+
+        if random_question_type == 1:
+            questions[i] = generatePrimsQuestion()
+        
+        elif random_question_type == 2:
+            questions[i] = generateKruskalsQuestion()
+        
+        else:
+            raise Exception('Random question number out of included range.')
+    
     return qobj.Quiz(
-        questions
-    )
-
-def generateQuiz2(num_questions : int):
-    questions = {}
-
-    for i in range(1, num_questions + 1):
-        questions[i] = generateKruskalsQuestion()
-
-    return qobj.Quiz(
-        questions
+    questions
     )
