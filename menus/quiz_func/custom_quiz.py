@@ -1,10 +1,12 @@
 import menus.quiz_func.quiz_objects as qobj
 import menus.quiz_func.custom_graph as cg
+import database.get_graph as get_graph
 import random as r
 
 TYPES_OF_GRAPH  = 5
 
 def getRandomGraph():
+    '''
     n = r.randint(1,5)
 
     if n == 1:
@@ -20,7 +22,10 @@ def getRandomGraph():
         return cg.getRandomGraph4()
 
     elif n == 5:
-        return cg.getRandomGraph5()
+        return cg.getRandomGraph5()'
+        '''
+    return get_graph.getGraph(5)
+    
 
 def generatePrimsQuestion():
     return qobj.PrimsQuestion(graph = getRandomGraph(), marks = 5)

@@ -13,6 +13,8 @@ class Vertex:
                   active_label_colour = 'black',
                   state = False):
         
+
+        
         self.fill = fill
         self.active_fill = active_fill
 
