@@ -66,6 +66,32 @@ def toggleSolution(quiz : qobj.Quiz, solution_text : tk.StringVar, awarded_marks
         quiz.questions[quiz.current_question].graph.colourEdges(canv)
         quiz.questions[quiz.current_question].graph.colourEdges(canv)
 
+def showNextStep(quiz : qobj.Quiz, canv : tk.Canvas):
+    #if the user's current solution is correct so far, show the next correct step
+    #if not, tell the user the current solution is wrong
+
+    #takes the length of the user's current solution
+    current_step = len(quiz.questions[quiz.current_question].graph.selected_edges)
+    users_current_solution = quiz.questions[quiz.current_question].graph.selected_edges
+
+    #if the user already has the correct solution
+    if users_current_solution == quiz.questions[quiz.current_question].solution:
+        quiz.questions[quiz.current_question].graph.markEdges(canv, users_current_solution)
+
+    #if the users solution is correct so far,
+    elif users_current_solution == quiz.questions[quiz.current_question].solution[0:(current_step)]:
+        next_edge = quiz.questions[quiz.current_question].solution[current_step]
+        edge_id = quiz.questions[quiz.current_question].graph.getIdFromObj(next_edge, quiz.questions[quiz.current_question].graph.e_map)
+        canv.itemconfig(edge_id, fill = 'orange')
+
+    #show user solution is wrong
+    else:
+        user_current_edge = users_current_solution[current_step - 1]
+        edge_id = quiz.questions[quiz.current_question].graph.getIdFromObj(user_current_edge, quiz.questions[quiz.current_question].graph.e_map)
+        canv.itemconfig(edge_id, fill = 'red')
+        
+
+
 
 def getSelectedGobj(quiz : qobj.Quiz):
     #redefines which vertices were selected

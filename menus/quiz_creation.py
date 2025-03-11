@@ -26,17 +26,32 @@ def drawQuizCreator(app : ttk.Window):
     #   GET QUIZ INPUTS
     ######################
 
-    ttk.Label(menu_frame, text = 'Number of questions', font = SUBTITLE_FONT, ).pack(anchor = 'w', padx = LABEL_PADDING, pady=LABEL_PADDING)
+
+    ##  question number
+
+    ttk.Label(menu_frame, text = 'Number of Questions:', font = SUBTITLE_FONT, ).pack(anchor = 'w', padx = LABEL_PADDING, pady=LABEL_PADDING)
     qno_txt = tk.StringVar()
     qno_txt.set('5')
     qno_selector = ttk.Combobox(menu_frame, state='readonly', takefocus=False, textvariable=qno_txt)
     qno_selector['values'] = ('5','10','20','30')
-    qno_selector.current(1)
-    qno_selector.pack(anchor = 'w',  padx = LABEL_PADDING, pady=LABEL_PADDING)
+    qno_selector.current(0)
+    qno_selector.pack(anchor = 'w',  padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
 
     ######################
 
-    ttk.Button(btn_frame, text = 'Create quiz', takefocus=False, command = lambda: st.gotoQuiz(app, qno_selector)).pack(padx = GUI_PADDING, pady = INNER_PADDING, side = 'bottom')
+    ##  question type
+
+    ttk.Label(menu_frame, text = 'Question Type:', font = SUBTITLE_FONT, ).pack(anchor = 'w', padx = LABEL_PADDING, pady=LABEL_PADDING)
+    qtype_txt = tk.StringVar()
+    qtype_txt.set('Include All')
+    qtype_selector = ttk.Combobox(menu_frame, state='readonly', takefocus=False, textvariable=qtype_txt)
+    qtype_selector['values'] = ("Include All", "Prim's Algorithm", "Kruskal's Algorithm")
+    qtype_selector.current(0)
+    qtype_selector.pack(anchor = 'w',  padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
+
+    ######################
+
+    ttk.Button(btn_frame, text = 'Create quiz', takefocus=False, command = lambda: st.gotoQuiz(app, qno_selector, qtype_selector)).pack(padx = GUI_PADDING, pady = INNER_PADDING, side = 'bottom')
 
 
 

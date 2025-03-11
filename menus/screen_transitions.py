@@ -11,9 +11,21 @@ def gotoQuizCreation(app : ttk.Window):
     af.clearWindow(app)
     qc.drawQuizCreator(app)
 
-def gotoQuiz(app : ttk.Window, combobox : ttk.Combobox):
+def gotoQuiz(app : ttk.Window, qno_selector : ttk.Combobox, qtype_selector : ttk.Combobox):
     af.clearWindow(app)
-    quiz = cq.generateQuiz2(int(combobox.get()))
+
+    num_questions = qno_selector.get()
+    question_type = qtype_selector.get()
+
+    #if the user selects out of combobox, it can be empty.
+    #this stops the program from erroring  by instead using default values:
+    if qno_selector.get() == '':
+        num_questions = 5
+
+    if qtype_selector.get() == '':
+        question_type = "Include All"
+
+    quiz = cq.generateQuiz(int(num_questions), question_type)
     qm.initQuiz(app, quiz)
 
 
