@@ -6,27 +6,11 @@ import random as r
 TYPES_OF_GRAPH  = 5
 
 def getRandomGraph():
-    '''
-    n = r.randint(1,5)
-
-    if n == 1:
-        return cg.getRandomGraph1()
     
-    elif n == 2:
-        return cg.getRandomGraph2()
+    n = r.randint(1,TYPES_OF_GRAPH)
 
-    elif n == 3:
-        return cg.getRandomGraph3()
-
-    elif n == 4:
-        return cg.getRandomGraph4()
-
-    elif n == 5:
-        return cg.getRandomGraph5()'
-        '''
-    return get_graph.getGraph(5)
-    
-
+    return get_graph.getGraph(n)
+        
 def generatePrimsQuestion():
     return qobj.PrimsQuestion(graph = getRandomGraph(), marks = 5)
 
