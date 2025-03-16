@@ -1,9 +1,11 @@
 import menus.quiz_func.graph_objects as gobj
-import random as r
+import random as r 
+
+import sqlite3
 
 MAX_WEIGHT = 200
 
-def getRandomGraph1():
+def getGraph1():
 
     vertices = [gobj.Vertex([50,50],'a'),
                 gobj.Vertex([50,300],'b'),
@@ -133,8 +135,3 @@ def getRandomGraph5():
     ]
 
     return gobj.Graph(vertices,edges)
-
-    
-#g = getRandomGraph1()
-#g.kruskalsAlgorithm()
-
