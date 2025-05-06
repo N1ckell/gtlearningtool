@@ -1,8 +1,9 @@
 import menus.quiz_func.graph_objects as gobj
 import random as r 
 
-import sqlite3
-
+#this max weight was used when randomizing graphs
+#this is no longer used - max weight is determined in 
+#get_graph.py called MAX_EDGE_WEIGHT
 MAX_WEIGHT = 200
 
 def getGraph1():

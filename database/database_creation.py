@@ -15,7 +15,7 @@ graph_table = '''
 cursor.execute(graph_table)
 
 #creates a table for the vertices if it
-#dpesn't already exist
+#doesn't already exist
 
 vertices_table = '''
     CREATE TABLE IF NOT EXISTS vertices(

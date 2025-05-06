@@ -132,7 +132,8 @@ def drawVertices(canv : tk.Canvas, vertex_list : list[gobj.Vertex]):
 def clickedVertex(e, canv : tk.Canvas, graph : gobj.Graph, vertex_label : tk.StringVar):
 
     #returns all items currently under the mouse (using 'current')
-    #and returns them as a tuple, hence the indexing
+    #and returns them as a tuple, 
+    #hence the indexing - top layered item is lowest in list
     clicked_vertex = (canv.find_withtag('current'))[0]
 
     vertex = graph.v_map[clicked_vertex]
@@ -158,11 +159,7 @@ def clickedVertex(e, canv : tk.Canvas, graph : gobj.Graph, vertex_label : tk.Str
         graph.selected_vertices.remove(vertex)
 
     vertex_label.set('Selected Vertices:\n[' + ' , '.join(qgui.verticesToLabelText(graph.selected_vertices)) + ']' )
-    
-    
 
-
-    #selected_label.set('Selected Vertices: ' + ','.join(ggui.getSelectedVertices(vertex_map)))
 
 
 def clickedEdge(e, canv : tk.Canvas, graph : gobj.Graph,  edge_label : tk.StringVar):
@@ -248,7 +245,7 @@ def generateRandomEdges(vertex_list : list[gobj.Vertex], min_weight : int, max_w
         
 
         #uses reversed as connecting vertex A to B
-        #is the same as attaching B to A
+        #is the same as attaching B to A in a non-directed graph
         while pair in connected_vertices or reversed(pair) in connected_vertices:
             pair = [vertex_list[r.randint(0,len(vertex_list)-1)],
                     vertex_list[r.randint(0,len(vertex_list)-1)]

@@ -5,7 +5,7 @@ import menus.main_menu as mm
 WINDOW_BG = 'lightgrey'
 
 #create app window
-app = ttk.Window(title= 'GT Learning Tool')
+app = ttk.Window(title = 'GT Learning Tool')
 app.config(background = WINDOW_BG)
 #starts the window maximised
 app.state('zoomed')
