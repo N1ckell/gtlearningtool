@@ -29,25 +29,25 @@ def drawQuizCreator(app : ttk.Window):
 
     ##  question number
 
-    ttk.Label(menu_frame, text = 'Number of Questions:', font = SUBTITLE_FONT, ).pack(anchor = 'w', padx = LABEL_PADDING, pady=LABEL_PADDING)
+    ttk.Label(menu_frame, text = 'Number of Questions:', font = SUBTITLE_FONT, ).pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
     qno_txt = tk.StringVar()
     qno_txt.set('5')
     qno_selector = ttk.Combobox(menu_frame, state='readonly', takefocus=False, textvariable=qno_txt)
     qno_selector['values'] = ('5','10','20','30')
     qno_selector.current(0)
-    qno_selector.pack(anchor = 'w',  padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
+    qno_selector.pack(padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
 
     ######################
 
     ##  question type
 
-    ttk.Label(menu_frame, text = 'Question Type:', font = SUBTITLE_FONT, ).pack(anchor = 'w', padx = LABEL_PADDING, pady=LABEL_PADDING)
+    ttk.Label(menu_frame, text = 'Question Type:', font = SUBTITLE_FONT, ).pack(padx = LABEL_PADDING, pady=LABEL_PADDING)
     qtype_txt = tk.StringVar()
     qtype_txt.set('Include All')
     qtype_selector = ttk.Combobox(menu_frame, state='readonly', takefocus=False, textvariable=qtype_txt)
     qtype_selector['values'] = ("Include All", "Prim's Algorithm", "Kruskal's Algorithm")
     qtype_selector.current(0)
-    qtype_selector.pack(anchor = 'w',  padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
+    qtype_selector.pack(padx = GUI_PADDING + GUI_PADDING, pady=LABEL_PADDING)
 
     ######################
 

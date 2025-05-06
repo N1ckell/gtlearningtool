@@ -1,7 +1,3 @@
-'''#create quiz obj
-quiz = cq.generateQuiz1(10)
-
-qnav.drawQuizScreen(app, quiz)'''
 
 import ttkbootstrap as ttk
 import menus.quiz_func.custom_quiz as cq

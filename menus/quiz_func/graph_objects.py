@@ -32,7 +32,9 @@ class Vertex:
 
         self.position = position
         #tk needs 4 coords for circle instead of 
-        #2 and radius, but working w radius is easier (personally)
+        #2 and radius, but working with radius is easier
+        #(later found out this could have been solved using anchors, but didn't
+        #have time to implement)
         self.tk_circle_points = self.getCirclePoints(
                                     self.position[0],
                                     self.position[1])
@@ -115,16 +117,15 @@ class Graph:
 
     def getAdjacentVertices(self, vertex : Vertex):
         #returns the adjacent vertices and the
-        #edge connecting it to given vertex
+        #edge connecting it to the given vertex
         adjacent = []
 
         for edge in self.edges:
             if edge.v1 == vertex and (edge.v2, edge) not in adjacent:
-                #x = (edge.v2.label, str(edge.v1.label) + str(edge.v2.label))
                 x = (edge.v2, edge)
                 adjacent.append(x)
             elif edge.v2 == vertex and (edge.v1, edge) not in adjacent:
-                #y = (edge.v1.label, str(edge.v1.label) + str(edge.v2.label))
+                
                 y = (edge.v1, edge)
                 adjacent.append(y)
 
@@ -221,7 +222,6 @@ class Graph:
             for edge in edge_list:
                 #(this if is just used so we have the id for the edge)
 
-    
                 if self.e_map[edge_id] == edge:
 
                     #if the user has selected the edge, make it green
@@ -232,7 +232,10 @@ class Graph:
                     else:
                         canv.itemconfig(edge_id, fill = 'orange')
 
-    def markVertices(self, canv : tk.Canvas, vertex_list: list[Vertex]):
+    #function was orginally going to be used to colour vertices when marking, too,
+    #but overcomplicated the UI so was scrapped. Kept incase
+    #is useful for future reference
+    '''def markVertices(self, canv : tk.Canvas, vertex_list: list[Vertex]):
 
         for vertex_id in self.v_map:
             if self.v_map[vertex_id].state == True:
@@ -253,9 +256,9 @@ class Graph:
                     
                     #if the user hasn't selected the vertex, make it orange
                     else:
-                        canv.itemconfig(vertex_id, fill = 'orange')
+                        canv.itemconfig(vertex_id, fill = 'orange')'''
 
-
+    #find function used when detecting cycles in Kruskal's algorithm
     def find(self, parent, vertex : Vertex):
         #if the parent of the given vertex isn't itself
         #(is child of another vertex), continue searching
@@ -268,7 +271,8 @@ class Graph:
         else:
 
             return parent[vertex]
-
+        
+    #union function used when detecting cycles in Kruskal's algorithm
     def union(self, parent, v1, v2):
         
         #find the parent of the given vertices
@@ -341,16 +345,9 @@ class Graph:
         return chosen_edges
             
             
-
-                        
-
-
     def primsAlgorithm(self, starting_vertex : Vertex):
         #init mst including starting vertex
-        #starting_vertex = self.vertices(r.randint(0,len(self.vertices)))
-        #starting_vertex = self.vertices[0]
-
-        #canv.itemconfig(self.getIdFromObj(starting_vertex, self.v_map), fill = 'green2')
+    
         mst = [starting_vertex]
         chosen_edges = []
 
@@ -376,11 +373,7 @@ class Graph:
 
             if current_vertex:
                 mst.append(current_vertex)
-                #canv.itemconfig(self.getIdFromObj(current_vertex, self.v_map), fill = 'green2')
-                #current_vertex.state = True
                 chosen_edges.append(current_edge)
-                #current_edge.state = True
-                #canv.itemconfig(self.getIdFromObj(current_edge, self.e_map), fill = 'green2')
         
         return chosen_edges
 

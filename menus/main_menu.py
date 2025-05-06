@@ -17,5 +17,4 @@ def drawMenu(app : ttk.Window):
     btn_frame.pack(expand = 'y', padx = GUI_PADDING, pady = GUI_PADDING)
 
     ttk.Button(btn_frame, text = 'Start a Quiz', takefocus=False, command = lambda: st.gotoQuizCreation(app)).pack(padx = GUI_PADDING, pady = INNER_PADDING, fill='both')
-    ttk.Button(btn_frame, takefocus=False, text = 'Walkthrough Mode').pack(padx = GUI_PADDING, pady = INNER_PADDING, fill='both')
-    ttk.Button(btn_frame, takefocus=False, text = 'Exit').pack(padx = GUI_PADDING, pady = INNER_PADDING, fill='both')
+    ttk.Button(btn_frame, takefocus=False, text = 'Exit', command= app.destroy).pack(padx = GUI_PADDING, pady = INNER_PADDING, fill='both')

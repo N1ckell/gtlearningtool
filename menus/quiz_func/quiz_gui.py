@@ -23,7 +23,7 @@ def createCanvasFrame(app : ttk.Window):
 def createCanvas(frame: ttk.Frame,
                  canv_w : int, canv_h : int,
                  canv_colour : str):
-    #create canvas
+    
     
     canv = tk.Canvas(frame, width = canv_w, height = canv_h)
     canv.config(background= canv_colour)
@@ -178,7 +178,7 @@ def drawMarkBtn(frame : ttk.Frame, quiz : qobj.Quiz, solution_text : tk.Label, a
 def createGraphGui(app : ttk.Window, graph : gobj.Graph, right_frame : ttk.Frame, canv : tk.Canvas, quiz : qobj.Quiz, canv_frame : tk.Canvas):
 
     #################
-    #QUIZ RELATED ELEMENTS
+    #QUIZ RELATED WIDGETS
     #################
 
     top_ui_frame = tk.Frame(master = app)

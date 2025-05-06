@@ -1,5 +1,4 @@
 import menus.quiz_func.quiz_objects as qobj
-import menus.quiz_func.custom_graph as cg
 import database.get_graph as get_graph
 import random as r
 
